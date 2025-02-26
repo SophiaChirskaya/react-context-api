@@ -1,39 +1,21 @@
-import {useState, useEffect} from "react";
-import axios from "axios";
+import {useContext} from "react";
+import GlobalContext from "./../contexts/GlobalContext";
 import PostCard from "./PostCard";
 
 
+const PostsListUser = () => {
 
-    const BlogsList = () => {
-        const [posts, setPosts] = useState([]);
-        
+    const { posts } = useContext(GlobalContext);
 
-        function fetchPosts() {
-          axios.get("http://localhost:3000/posts")
-          .then((res) =>
-            setPosts(res.data)
-          
-        )
-        }
+    return (
+        <>
 
-        useEffect(fetchPosts, []);
+        {posts.map((post, I) => (
+                <PostCard key={post.id} post={post}/>
 
+            ))}
+        </>
+    )
+}
 
-
-        return (
-            <>
-
-            {
-                posts.map((post, I) => (
-                    <PostCard key={post.id} post={post}/>
-
-                ))
-            }
-            </>
-        )
-
-
-
-    }
-
-    export default PostsListUser
+export default PostsListUser

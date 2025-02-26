@@ -1,9 +1,6 @@
 
-// import './App.css'
-
-
 // Import degli elementi gestione rotte
-import { BrowserRouter, Routes, Route  } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate  } from 'react-router-dom';
 import GlobalContext from './contexts/GlobalContext';
 import { useState, useEffect } from 'react';
 import axios from "axios";
@@ -20,20 +17,22 @@ import PostsDetailPage from "./pages/PostsDetailPage";
 
 function App() {
 
-  const [posts, setPosts]= useStatae([])
+  const [posts, setPosts]= useState([]);
 
   function fetchPosts() {
     axios.get("http://localhost:3000/posts")
     .then(res => setPosts(res.data))
-    .catch(err => console.log('errore', err))
+    
   }
+
+  useEffect(fetchPosts, []);
 
 
   return(
     <GlobalContext.provider value={{posts}}>
-    <BrowserRouter>
-    <Routes>
-      <Route element={<DefaultLayout />} >
+     <BrowserRouter>
+       <Routes>
+       <Route element={<DefaultLayout />} >
         <Route index element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path='/posts'>
@@ -42,10 +41,10 @@ function App() {
           <Route path=":id" element={<PostsDetailPage />} />
         </Route>
 
-      </Route>
+        </Route>
 
-    </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
     </GlobalContext.provider>
   )
 }
