@@ -4,6 +4,9 @@
 
 // Import degli elementi gestione rotte
 import { BrowserRouter, Routes, Route  } from 'react-router-dom';
+import GlobalContext from './contexts/GlobalContext';
+import { useState, useEffect } from 'react';
+import axios from "axios";
 
 // Layout
 import DefaultLayout from "./layouts/DefaultLayout";
@@ -16,7 +19,18 @@ import PostsDetailPage from "./pages/PostsDetailPage";
 
 
 function App() {
+
+  const [posts, setPosts]= useStatae([])
+
+  function fetchPosts() {
+    axios.get("http://localhost:3000/posts")
+    .then(res => setPosts(res.data))
+    .catch(err => console.log('errore', err))
+  }
+
+
   return(
+    <GlobalContext.provider value={{posts}}>
     <BrowserRouter>
     <Routes>
       <Route element={<DefaultLayout />} >
@@ -32,6 +46,7 @@ function App() {
 
     </Routes>
     </BrowserRouter>
+    </GlobalContext.provider>
   )
 }
 
